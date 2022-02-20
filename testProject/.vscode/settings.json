@@ -1,5 +1,7 @@
 {
   "extensions.supportUntrustedWorkspaces": true,
-  "phpfmt.psr2": true,
-  "phpfmt.indent_with_space": 4
+  "nbtools.php_formatter_config": {
+    "indent-shift-width": 2,
+    "tab-size": 2
+  }
 }
