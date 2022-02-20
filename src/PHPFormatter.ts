@@ -29,8 +29,8 @@ class PHPFormatter {
     this.config = Workspace.getConfiguration('nbtools') as any;
     this.args.length = 0;
 
-    if (this.config.custom_arguments !== '') {
-      this.args.push(this.config.custom_arguments);
+    if (this.config.java_custom_args !== '') {
+      this.args.push(this.config.java_custom_args);
       return;
     }
   }
@@ -45,6 +45,7 @@ class PHPFormatter {
 
   private getArgs(fileName: string): Array<string> {
     const args: Array<string> = this.args.slice(0);
+    args.push(`-m "text/x-php5"`);
     args.push(`"${fileName}"`);
     return args;
   }
@@ -125,6 +126,7 @@ class PHPFormatter {
       // }
 
       const args: Array<string> = this.getArgs(tmpFileName);
+
       args.unshift(`"${PHPFormatter.getJarPath()}"`);
 
       let formatCmd: string;
@@ -141,11 +143,16 @@ class PHPFormatter {
         execSync(formatCmd, execOptions);
 
       } catch (err) {
-        if (err.code == "10") {
-          return reject(new Error('nbtools: PHP file has syntax errors'));
+        if (err.status == "10") {
+          this.widget.addToOutput(err.message + "[exit code: " + err.status + "]");
+          Window.setStatusBarMessage(
+            'nbtools: Format failed - syntax errors found',
+            4500
+          );
+          return reject();
         } else {
           this.widget.addToOutput(err.message + "[exit code: " + err.status + "]").show();
-          return reject(new Error('nbtools: Execute nbtools cli failed'));
+          return reject(new Error('nbtools: Execute java nbtools failed. Please ensure you have java installed.'));
         }
       }
 
