@@ -81,17 +81,17 @@ class PHPFormatter {
         }
       }
 
-      try {
-        const stdout: Buffer = execSync(`${this.config.java_bin} -version`);
+      // try {
+      //   const stdout: Buffer = execSync(`${this.config.java_bin} -version`);
 
-        if (Number(stdout.toString()) < 50600 && Number(stdout.toString()) > 80000) {
-          return reject(new Error('nbtools: PHP version < 5.6 or > 8.0'));
-        }
-      } catch (err) {
-        return reject(
-          new Error(`nbtools: java_bin "${this.config.java_bin}" is invalid`)
-        );
-      }
+      //   if (Number(stdout.toString()) < 50600 && Number(stdout.toString()) > 80000) {
+      //     return reject(new Error('nbtools: PHP version < 5.6 or > 8.0'));
+      //   }
+      // } catch (err) {
+      //   return reject(
+      //     new Error(`nbtools: java_bin "${this.config.java_bin}" is invalid`)
+      //   );
+      // }
 
       const tmpDir: string = os.tmpdir();
 
