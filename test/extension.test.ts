@@ -36,9 +36,9 @@ suite('PHPFmt Test', () => {
         Commands.executeCommand('editor.action.formatDocument').then(
           () => {
             execSync(
-              `java -jar ${PHPFmt.getJarPath()} ${filePath} -o tmp/formatted.php`
+              `java -jar ${PHPFmt.getJarPath()} ${filePath} -o test-tmp/formatted.php`
             );
-            const phpfmtFormatted: string = fs.readFileSync("tmp/formatted.php").toString();
+            const phpfmtFormatted: string = fs.readFileSync("test-tmp/formatted.php").toString();
             assert.equal(doc.getText(), phpfmtFormatted);
           },
           err => console.error(err)
