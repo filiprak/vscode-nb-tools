@@ -19,7 +19,7 @@
     "vscode"
   ],
   "publisher": "filiprak",
-  "author": "filiprak",
+  "author": "Filip Rak",
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -56,15 +56,10 @@
       "title": "nbtools Configuration options",
       "type": "object",
       "properties": {
-        "nbtools.php_bin": {
+        "nbtools.java_bin": {
           "type": "string",
-          "default": "php",
-          "description": "php executable path"
-        },
-        "nbtools.detect_indent": {
-          "type": "boolean",
-          "default": false,
-          "description": "auto detecting indent type and size (will ignore indent_with_space)"
+          "default": "java",
+          "description": "Java executable path"
         },
         "nbtools.psr1": {
           "type": "boolean",
@@ -145,7 +140,6 @@
     "vscode": "^1.1.37"
   },
   "dependencies": {
-    "detect-indent": "^6.0.0",
     "find-up": "^5.0.0"
   }
 }
