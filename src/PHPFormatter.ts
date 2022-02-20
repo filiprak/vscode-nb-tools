@@ -33,7 +33,7 @@ class PHPFormatter {
       this.args.push(this.config.java_custom_args);
     }
     if (this.config.php_formatter_config !== null) {
-      this.args.push(`-c '${JSON.stringify(this.config.php_formatter_config)}'`);
+      this.args.push(`-c=${JSON.stringify(this.config.php_formatter_config)}`);
     }
   }
 
@@ -47,45 +47,22 @@ class PHPFormatter {
 
   private getArgs(fileName: string): Array<string> {
     const args: Array<string> = this.args.slice(0);
-    args.push(`-m "text/x-php5"`);
+    args.push(`-m="text/x-php5"`);
     args.push(`"${fileName}"`);
     return args;
   }
 
   public format(text: string): Promise<string> {
     return new Promise<string>((resolve, reject) => {
-      let iniPath: string | undefined;
-
       const execOptions = { cwd: '' };
 
       if (Window.activeTextEditor) {
         execOptions.cwd = path.dirname(
           Window.activeTextEditor.document.fileName
         );
-
-        const workspaceFolders: WorkspaceFolder[] | undefined = Workspace.workspaceFolders;
-
-        if (workspaceFolders) {
-          iniPath = findUp.sync('.nbtools.ini', {
-            cwd: execOptions.cwd
-          });
-          const origIniPath = iniPath;
-
-          for (let workspaceFolder of workspaceFolders) {
-            if (
-              origIniPath &&
-              origIniPath.startsWith(workspaceFolder.uri.fsPath)
-            ) {
-              break;
-            } else {
-              iniPath = undefined;
-            }
-          }
-        }
       }
 
       const tmpDir: string = os.tmpdir();
-
       const tmpFileName: string = path.normalize(
         `${tmpDir}/temp-${Math.random()
           .toString(36)
@@ -105,22 +82,20 @@ class PHPFormatter {
 
       const args: Array<string> = this.getArgs(tmpFileName);
 
-      args.unshift(`"${PHPFormatter.getJarPath()}"`);
-
       let formatCmd: string;
 
-      if (!iniPath) {
-        formatCmd = `${this.config.java_bin} -XX:TieredStopAtLevel=1 -XX:CICompilerCount=1 -XX:+UseSerialGC -Xmx512m -XX:-UsePerfData -jar ${args.join(' ')}`;
-      } else {
-        formatCmd = `${this.config.java_bin} -XX:TieredStopAtLevel=1 -XX:CICompilerCount=1 -XX:+UseSerialGC -Xmx512m -XX:-UsePerfData -jar ${args.join(' ')} --config=${iniPath}`;
-      }
+      formatCmd = `${this.config.java_bin} -XX:TieredStopAtLevel=1 -XX:CICompilerCount=1 -XX:+UseSerialGC -Xmx512m -XX:-UsePerfData -jar "${PHPFormatter.getJarPath()}" ${args.join(' ')}`;
 
       this.widget.addToOutput(formatCmd);
 
       try {
         const start = Date.now();
-        execSync(formatCmd, execOptions);
+        const stdout: string = execSync(formatCmd, execOptions).toString();
         const stop = Date.now();
+
+        if (stdout) {
+          this.widget.addToOutput(stdout);
+        }
 
         Window.setStatusBarMessage(
           `nbtools: Reformatting time: ${((stop - start) / 1000).toFixed(3)}s`,
