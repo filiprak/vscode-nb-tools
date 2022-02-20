@@ -82,18 +82,6 @@ class PHPFormatter {
         }
       }
 
-      // try {
-      //   const stdout: Buffer = execSync(`${this.config.java_bin} -version`);
-
-      //   if (Number(stdout.toString()) < 50600 && Number(stdout.toString()) > 80000) {
-      //     return reject(new Error('nbtools: PHP version < 5.6 or > 8.0'));
-      //   }
-      // } catch (err) {
-      //   return reject(
-      //     new Error(`nbtools: java_bin "${this.config.java_bin}" is invalid`)
-      //   );
-      // }
-
       const tmpDir: string = os.tmpdir();
 
       const tmpFileName: string = path.normalize(
@@ -113,18 +101,6 @@ class PHPFormatter {
         );
       }
 
-      // test whether the php file has syntax error
-      // try {
-      //   execSync(`${this.config.java_bin} -l ${tmpFileName}`, execOptions);
-      // } catch (err) {
-      //   this.widget.addToOutput(err.message);
-      //   Window.setStatusBarMessage(
-      //     'nbtools: Format failed - syntax errors found',
-      //     4500
-      //   );
-      //   return reject();
-      // }
-
       const args: Array<string> = this.getArgs(tmpFileName);
 
       args.unshift(`"${PHPFormatter.getJarPath()}"`);
@@ -132,15 +108,22 @@ class PHPFormatter {
       let formatCmd: string;
 
       if (!iniPath) {
-        formatCmd = `${this.config.java_bin} -jar ${args.join(' ')}`;
+        formatCmd = `${this.config.java_bin} -XX:TieredStopAtLevel=1 -XX:CICompilerCount=1 -XX:+UseSerialGC -Xmx512m -XX:-UsePerfData -jar ${args.join(' ')}`;
       } else {
-        formatCmd = `${this.config.java_bin} -jar ${args.join(' ')} --config=${iniPath}`;
+        formatCmd = `${this.config.java_bin} -XX:TieredStopAtLevel=1 -XX:CICompilerCount=1 -XX:+UseSerialGC -Xmx512m -XX:-UsePerfData -jar ${args.join(' ')} --config=${iniPath}`;
       }
 
       this.widget.addToOutput(formatCmd);
 
       try {
+        const start = Date.now();
         execSync(formatCmd, execOptions);
+        const stop = Date.now();
+
+        Window.setStatusBarMessage(
+          `nbtools: Reformatting time: ${((stop - start) / 1000).toFixed(3)}s`,
+          4500
+        );
 
       } catch (err) {
         if (err.status == "10") {
