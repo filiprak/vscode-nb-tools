@@ -141,8 +141,12 @@ class PHPFormatter {
         execSync(formatCmd, execOptions);
 
       } catch (err) {
-        this.widget.addToOutput(err.message).show();
-        return reject(new Error('nbtools: Execute nbtools cli failed'));
+        if (err.code == "10") {
+          return reject(new Error('nbtools: PHP file has syntax errors'));
+        } else {
+          this.widget.addToOutput(err.message + "[exit code: " + err.status + "]").show();
+          return reject(new Error('nbtools: Execute nbtools cli failed'));
+        }
       }
 
       const formatted: string = fs.readFileSync(tmpFileName, 'utf-8');
