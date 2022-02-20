@@ -9,7 +9,7 @@
     "watch": "tsc -watch -p ./",
     "trash": "trash out",
     "postinstall": "node ./node_modules/vscode/bin/install",
-    "install": "node ./node_modules/phpfmt/install.js",
+    "download": "node ./scripts/download.js",
     "pretest": "npm run build",
     "test": "cross-env CODE_TESTS_WORKSPACE=testProject node ./node_modules/vscode/bin/test",
     "prepublishOnly": "npm run build && vsce publish"
@@ -18,7 +18,6 @@
     "phpfmt",
     "vscode"
   ],
-  "icon": "logo.png",
   "publisher": "kokororin",
   "author": "kokororin",
   "license": "BSD-3-Clause",
@@ -143,6 +142,7 @@
     "cross-env": "^7.0.3",
     "mocha": "^9.2.0",
     "pjson": "^1.0.9",
+    "request": "^2.88.2",
     "trash-cli": "^5.0.0",
     "ts-node": "^10.4.0",
     "typescript": "^4.5.5",
@@ -150,7 +150,6 @@
   },
   "dependencies": {
     "detect-indent": "^6.0.0",
-    "find-up": "^5.0.0",
-    "phpfmt": "^0.0.0"
+    "find-up": "^5.0.0"
   }
 }
