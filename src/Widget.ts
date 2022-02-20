@@ -19,13 +19,13 @@ export default class Widget {
   }
 
   public constructor() {
-    this.outputChannel = Window.createOutputChannel('phpfmt');
+    this.outputChannel = Window.createOutputChannel('nbtools');
     this.statusBarItem = Window.createStatusBarItem(
       StatusBarAlignment.Right,
       -1
     );
-    this.statusBarItem.text = 'phpfmt';
-    this.statusBarItem.command = 'phpfmt.openOutput';
+    this.statusBarItem.text = 'nbtools';
+    this.statusBarItem.command = 'nbtools.openOutput';
     this.toggleStatusBarItem(Window.activeTextEditor);
   }
 

@@ -33,7 +33,7 @@ export default class PHPFmtProvider {
   }
 
   public formatCommand(): Disposable {
-    return Commands.registerTextEditorCommand('phpfmt.format', textEditor => {
+    return Commands.registerTextEditorCommand('nbtools.format', textEditor => {
       if (textEditor.document.languageId === 'php') {
         Commands.executeCommand('editor.action.formatDocument');
       }
@@ -124,7 +124,7 @@ export default class PHPFmtProvider {
           this.widget.toggleStatusBarItem(editor);
         }
       }),
-      Commands.registerCommand('phpfmt.openOutput', () => {
+      Commands.registerCommand('nbtools.openOutput', () => {
         this.widget.getOutputChannel().show();
       })
     ];

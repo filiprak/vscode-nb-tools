@@ -27,7 +27,7 @@ class PHPFmt {
   }
 
   public loadSettings(): void {
-    this.config = Workspace.getConfiguration('phpfmt') as any;
+    this.config = Workspace.getConfiguration('nbtools') as any;
     this.args.length = 0;
 
     if (this.config.custom_arguments !== '') {
@@ -115,7 +115,7 @@ class PHPFmt {
         if (this.config.indent_with_space !== 4 && this.config.psr2) {
           return reject(
             new Error(
-              'phpfmt: For PSR2, code MUST use 4 spaces for indenting, not tabs.'
+              'nbtools: For PSR2, code MUST use 4 spaces for indenting, not tabs.'
             )
           );
         }
@@ -131,7 +131,7 @@ class PHPFmt {
         const workspaceFolders: WorkspaceFolder[] | undefined =
           Workspace.workspaceFolders;
         if (workspaceFolders) {
-          iniPath = findUp.sync('.phpfmt.ini', {
+          iniPath = findUp.sync('.nbtools.ini', {
             cwd: execOptions.cwd
           });
           const origIniPath = iniPath;
@@ -155,11 +155,11 @@ class PHPFmt {
           execOptions
         );
         if (Number(stdout.toString()) < 50600 && Number(stdout.toString()) > 80000) {
-          return reject(new Error('phpfmt: PHP version < 5.6 or > 8.0'));
+          return reject(new Error('nbtools: PHP version < 5.6 or > 8.0'));
         }
       } catch (err) {
         return reject(
-          new Error(`phpfmt: php_bin "${this.config.php_bin}" is invalid`)
+          new Error(`nbtools: php_bin "${this.config.php_bin}" is invalid`)
         );
       }
 
@@ -177,7 +177,7 @@ class PHPFmt {
       } catch (err) {
         this.widget.addToOutput(err.message);
         return reject(
-          new Error(`phpfmt: Cannot create tmp file in "${tmpDir}"`)
+          new Error(`nbtools: Cannot create tmp file in "${tmpDir}"`)
         );
       }
 
@@ -187,7 +187,7 @@ class PHPFmt {
       } catch (err) {
         this.widget.addToOutput(err.message);
         Window.setStatusBarMessage(
-          'phpfmt: Format failed - syntax errors found',
+          'nbtools: Format failed - syntax errors found',
           4500
         );
         return reject();
@@ -211,7 +211,7 @@ class PHPFmt {
         execSync(formatCmd, execOptions);
       } catch (err) {
         this.widget.addToOutput(err.message).show();
-        return reject(new Error('phpfmt: Execute phpfmt failed'));
+        return reject(new Error('nbtools: Execute nbtools cli failed'));
       }
 
       const formatted: string = fs.readFileSync(tmpFileName, 'utf-8');
