@@ -31,7 +31,9 @@ class PHPFormatter {
 
     if (this.config.java_custom_args !== '') {
       this.args.push(this.config.java_custom_args);
-      return;
+    }
+    if (this.config.php_formatter_config !== null) {
+      this.args.push(`-c '${JSON.stringify(this.config.php_formatter_config)}'`);
     }
   }
 
