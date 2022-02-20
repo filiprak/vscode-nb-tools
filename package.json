@@ -6,10 +6,8 @@
   "main": "./out/src/extension",
   "scripts": {
     "build": "npm run trash && tsc -p ./",
-    "prebuild": "npm run generate",
     "watch": "tsc -watch -p ./",
     "trash": "trash out",
-    "generate": "ts-node scripts/generate.ts",
     "postinstall": "node ./node_modules/vscode/bin/install",
     "install": "node ./node_modules/phpfmt/install.js",
     "pretest": "npm run build",
