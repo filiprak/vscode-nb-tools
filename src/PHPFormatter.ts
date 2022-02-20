@@ -1,13 +1,11 @@
 import {
   workspace as Workspace,
   window as Window,
-  WorkspaceFolder
 } from 'vscode';
 import path from 'path';
 import fs from 'fs';
 import os from 'os';
 import { execSync } from 'child_process';
-import findUp from 'find-up';
 import INbToolsConfig from './INbToolsConfig';
 import Widget from './Widget';
 
@@ -52,7 +50,7 @@ class PHPFormatter {
     return args;
   }
 
-  public format(text: string): Promise<string> {
+  public format(text: string, start: number, end: number): Promise<string> {
     return new Promise<string>((resolve, reject) => {
       const execOptions = { cwd: '' };
 
@@ -81,6 +79,14 @@ class PHPFormatter {
       }
 
       const args: Array<string> = this.getArgs(tmpFileName);
+
+      if (start >= 0) {
+        args.push(`-s=${start}`);
+      }
+
+      if (end >= 0) {
+        args.push(`-e=${end}`);
+      }
 
       let formatCmd: string;
 

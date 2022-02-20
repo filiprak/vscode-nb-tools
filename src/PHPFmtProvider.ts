@@ -48,16 +48,16 @@ export default class PHPFmtProvider {
           return new Promise<any>((resolve, reject) => {
             const originalText: string = document.getText();
             const lastLine = document.lineAt(document.lineCount - 1);
-            const range: Range = new Range(
+            const fullRange: Range = new Range(
               new Position(0, 0),
               lastLine.range.end
             );
 
             this.fmt
-              .format(originalText)
+              .format(originalText, -1, -1)
               .then((text: string) => {
                 if (text !== originalText) {
-                  resolve([new TextEdit(range, text)]);
+                  resolve([new TextEdit(fullRange, text)]);
                 } else {
                   reject();
                 }
@@ -81,25 +81,18 @@ export default class PHPFmtProvider {
       {
         provideDocumentRangeFormattingEdits: (document, range) => {
           return new Promise<any>((resolve, reject) => {
-            let originalText: string = document.getText(range);
-            if (originalText.replace(/\s+/g, '').length === 0) {
-              return reject();
-            }
-
-            let hasModified: boolean = false;
-            if (originalText.search(/^\s*<\?php/i) === -1) {
-              originalText = `<?php\n${originalText}`;
-              hasModified = true;
-            }
+            const originalText: string = document.getText();
+            const lastLine = document.lineAt(document.lineCount - 1);
+            const fullRange: Range = new Range(
+              new Position(0, 0),
+              lastLine.range.end
+            );
 
             this.fmt
-              .format(originalText)
+              .format(originalText, document.offsetAt(range.start), document.offsetAt(range.end))
               .then((text: string) => {
-                if (hasModified) {
-                  text = text.replace(/^<\?php\r?\n/, '');
-                }
                 if (text !== originalText) {
-                  resolve([new TextEdit(range, text)]);
+                  resolve([new TextEdit(fullRange, text)]);
                 } else {
                   reject();
                 }
