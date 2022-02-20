@@ -1,7 +1,7 @@
 import assert from 'assert';
 import path from 'path';
 import fs from 'fs';
-import PHPFmt from '../src/PHPFmt';
+import PHPFormatter from '../src/PHPFormatter';
 import { execSync } from 'child_process';
 import {
   workspace as Workspace,
@@ -36,7 +36,7 @@ suite('PHPFmt Test', () => {
         Commands.executeCommand('editor.action.formatDocument').then(
           () => {
             execSync(
-              `java -jar ${PHPFmt.getJarPath()} ${filePath} -o test-tmp/formatted.php`
+              `java -jar ${PHPFormatter.getJarPath()} ${filePath} -o test-tmp/formatted.php`
             );
             const phpfmtFormatted: string = fs.readFileSync("test-tmp/formatted.php").toString();
             assert.equal(doc.getText(), phpfmtFormatted);

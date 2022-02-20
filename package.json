@@ -61,63 +61,10 @@
           "default": "java",
           "description": "Java executable path"
         },
-        "nbtools.psr1": {
-          "type": "boolean",
-          "default": false,
-          "description": "activate PSR1 style"
-        },
-        "nbtools.psr1_naming": {
-          "type": "boolean",
-          "default": false,
-          "description": "activate PSR1 style - Section 3 and 4.3 - Class and method names case."
-        },
-        "nbtools.psr2": {
-          "type": "boolean",
-          "default": true,
-          "description": "activate PSR2 style"
-        },
-        "nbtools.indent_with_space": {
-          "type": [
-            "integer",
-            "boolean"
-          ],
-          "default": 4,
-          "description": "use spaces instead of tabs for indentation. Default 4"
-        },
-        "nbtools.enable_auto_align": {
-          "type": "boolean",
-          "default": false,
-          "description": "enable auto align of ST_EQUAL and T_DOUBLE_ARROW"
-        },
-        "nbtools.visibility_order": {
-          "type": "boolean",
-          "default": false,
-          "description": "fixes visibiliy order for method in classes - PSR-2 4.2"
-        },
-        "nbtools.passes": {
-          "type": "array",
-          "default": [],
-          "description": "call specific compiler pass"
-        },
-        "nbtools.exclude": {
-          "type": "array",
-          "default": [],
-          "description": "disable specific passes"
-        },
-        "nbtools.smart_linebreak_after_curly": {
-          "type": "boolean",
-          "default": false,
-          "description": "convert multistatement blocks into multiline blocks"
-        },
-        "nbtools.yoda": {
-          "type": "boolean",
-          "default": false,
-          "description": "yoda-style comparisons"
-        },
-        "nbtools.cakephp": {
-          "type": "boolean",
-          "default": false,
-          "description": "Apply CakePHP coding style"
+        "nbtools.php_formatter_config": {
+          "type": "object",
+          "default": null,
+          "description": "NetBeans php formatter config"
         },
         "nbtools.custom_arguments": {
           "type": "string",

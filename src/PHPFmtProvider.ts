@@ -9,17 +9,17 @@ import {
   Disposable,
   DocumentSelector
 } from 'vscode';
-import PHPFmt from './PHPFmt';
+import PHPFormatter from './PHPFormatter';
 import Widget from './Widget';
 
 export default class PHPFmtProvider {
-  private phpfmt: PHPFmt;
+  private fmt: PHPFormatter;
   private widget: Widget;
   private documentSelector: DocumentSelector;
 
-  public constructor(phpfmt: PHPFmt) {
-    this.phpfmt = phpfmt;
-    this.widget = this.phpfmt.getWidget();
+  public constructor(formatter: PHPFormatter) {
+    this.fmt = formatter;
+    this.widget = this.fmt.getWidget();
     this.documentSelector = [
       { language: 'php', scheme: 'file' },
       { language: 'php', scheme: 'untitled' }
@@ -28,7 +28,7 @@ export default class PHPFmtProvider {
 
   public onDidChangeConfiguration(): Disposable {
     return Workspace.onDidChangeConfiguration(() => {
-      this.phpfmt.loadSettings();
+      this.fmt.loadSettings();
     });
   }
 
@@ -53,7 +53,7 @@ export default class PHPFmtProvider {
               lastLine.range.end
             );
 
-            this.phpfmt
+            this.fmt
               .format(originalText)
               .then((text: string) => {
                 if (text !== originalText) {
@@ -92,7 +92,7 @@ export default class PHPFmtProvider {
               hasModified = true;
             }
 
-            this.phpfmt
+            this.fmt
               .format(originalText)
               .then((text: string) => {
                 if (hasModified) {
