@@ -8,7 +8,6 @@ export function activate(context: ExtensionContext): void {
   context.subscriptions.push(
     provider.onDidChangeConfiguration(),
     provider.formatCommand(),
-    provider.listTransformationsCommand(),
     provider.documentFormattingEditProvider(),
     provider.documentRangeFormattingEditProvider(),
     ...provider.statusBarItem()

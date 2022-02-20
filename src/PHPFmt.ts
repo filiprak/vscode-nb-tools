@@ -9,7 +9,6 @@ import os from 'os';
 import { execSync } from 'child_process';
 import detectIndent from 'detect-indent';
 import findUp from 'find-up';
-import phpfmt from 'phpfmt';
 import IPHPFmtConfig from './IPHPFmtConfig';
 import Widget from './Widget';
 
@@ -21,6 +20,10 @@ class PHPFmt {
   public constructor() {
     this.loadSettings();
     this.widget = Widget.getInstance();
+  }
+
+  public static getJarPath(): string {
+    return path.resolve(path.dirname(__filename), '..', '..', 'bin/nb-fmt.jar');
   }
 
   public loadSettings(): void {
@@ -191,7 +194,7 @@ class PHPFmt {
       }
 
       const args: Array<string> = this.getArgs(tmpFileName);
-      args.unshift(`"${phpfmt.pharPath}"`);
+      args.unshift(`"${PHPFmt.getJarPath()}"`);
 
       let formatCmd: string;
       if (!iniPath) {

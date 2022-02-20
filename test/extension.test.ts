@@ -1,5 +1,7 @@
 import assert from 'assert';
 import path from 'path';
+import fs from 'fs';
+import PHPFmt from '../src/PHPFmt';
 import { execSync } from 'child_process';
 import {
   workspace as Workspace,
@@ -8,7 +10,6 @@ import {
   extensions as Extensions,
   Extension
 } from 'vscode';
-import phpfmt from 'phpfmt';
 
 const pkg: any = require('pjson');
 
@@ -29,16 +30,15 @@ suite('PHPFmt Test', () => {
 
   test('can format with command', () => {
     const filePath: string = path.join(Workspace.rootPath!, 'ugly.php');
+
     return Workspace.openTextDocument(filePath).then(doc => {
       return Window.showTextDocument(doc).then(() =>
         Commands.executeCommand('editor.action.formatDocument').then(
           () => {
-            const stdout: Buffer = execSync(
-              `php "${
-                phpfmt.pharPath
-              }" --psr2 --indent_with_space=4 --dry-run -o=- ${filePath}`
+            execSync(
+              `java -jar ${PHPFmt.getJarPath()} ${filePath} -o tmp/formatted.php`
             );
-            const phpfmtFormatted: string = stdout.toString();
+            const phpfmtFormatted: string = fs.readFileSync("tmp/formatted.php").toString();
             assert.equal(doc.getText(), phpfmtFormatted);
           },
           err => console.error(err)

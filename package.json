@@ -48,10 +48,6 @@
         "when": "!inOutput && editorFocus && editorLangId == php"
       },
       {
-        "command": "phpfmt.listTransformations",
-        "title": "phpfmt: List Transformations"
-      },
-      {
         "command": "phpfmt.openOutput",
         "title": "phpfmt: Open Output"
       }

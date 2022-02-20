@@ -7,13 +7,10 @@ import {
   Range,
   TextEdit,
   Disposable,
-  DocumentSelector,
-  QuickPickItem
+  DocumentSelector
 } from 'vscode';
 import PHPFmt from './PHPFmt';
 import Widget from './Widget';
-import Transformations from './Transformations';
-import ITransformationItem from './ITransformationItem';
 
 export default class PHPFmtProvider {
   private phpfmt: PHPFmt;
@@ -40,36 +37,6 @@ export default class PHPFmtProvider {
       if (textEditor.document.languageId === 'php') {
         Commands.executeCommand('editor.action.formatDocument');
       }
-    });
-  }
-
-  public listTransformationsCommand(): Disposable {
-    return Commands.registerCommand('phpfmt.listTransformations', () => {
-      const transformations = new Transformations(
-        this.phpfmt.getConfig().php_bin
-      );
-
-      const transformationItems: Array<
-        ITransformationItem
-      > = transformations.getTransformations();
-
-      const items: Array<QuickPickItem> = new Array<QuickPickItem>();
-      for (const item of transformationItems) {
-        items.push({
-          label: item.key,
-          description: item.description
-        });
-      }
-
-      Window.showQuickPick(items).then(result => {
-        if (typeof result !== 'undefined') {
-          const output = transformations.getExample({
-            key: result.label,
-            description: result.description || ''
-          });
-          this.widget.addToOutput(output).show();
-        }
-      });
     });
   }
 
