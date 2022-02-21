@@ -1,10 +1,5 @@
-export interface INbToolsConfigPHPFormatterPrefs {
-  "tab-size": number;
-  "indent-shift-width": number;
-};
-
 export default interface INbToolsConfig {
+  nb_config_zipfile: string,
   java_bin: string;
-  php_formatter_config: INbToolsConfigPHPFormatterPrefs,
   java_custom_args: string;
 };

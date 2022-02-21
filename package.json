@@ -57,27 +57,15 @@
       "title": "nbtools Configuration options",
       "type": "object",
       "properties": {
+        "nbtools.nb_config_zipfile": {
+          "type": "string",
+          "default": "",
+          "description": "Absolute file path to NetBeans config zip file"
+        },
         "nbtools.java_bin": {
           "type": "string",
           "default": "java",
           "description": "Java executable path"
-        },
-        "nbtools.php_formatter_config": {
-          "type": "object",
-          "default": null,
-          "description": "NetBeans php formatter config",
-          "properties": {
-            "indent-shift-width": {
-              "title": "Indent size",
-              "type": "number",
-              "default": 4
-            },
-            "tab-size": {
-              "title": "Tab size",
-              "type": "number",
-              "default": 4
-            }
-          }
         },
         "nbtools.java_custom_args": {
           "type": "string",

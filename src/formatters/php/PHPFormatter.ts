@@ -9,21 +9,55 @@ import { execSync } from 'child_process';
 import INbToolsConfig from '../../INbToolsConfig';
 import Formatter from '../Formatter';
 import NbTools from '../../NbTools';
+import NbPreferencesLoader from '../../NbPreferencesLoader';
 
 
 class PHPFormatter extends Formatter {
   private config: INbToolsConfig = {} as any;
+  private codeStyle: object | null = null;
 
   public constructor() {
     super();
   }
 
   public onConfigChanged(): void {
-    this.config = Workspace.getConfiguration('nbtools') as any;
+    const newConfig = Workspace.getConfiguration('nbtools') as any;
+    const oldConfig = this.config;
+
+    if (newConfig.nb_config_zipfile !== oldConfig.nb_config_zipfile) {
+      if (newConfig.nb_config_zipfile) {
+        this
+          .loadConfigFromZipfile(newConfig.nb_config_zipfile)
+          .then(prefs => {
+            Window.setStatusBarMessage(
+              `nbtools: Succesfully loaded php formatter config`,
+              4500
+            );
+
+            this.codeStyle = prefs;
+          })
+          .catch(err => {
+            this.codeStyle = null;
+
+            Window.showErrorMessage("nbtools: Failed to load php formatter config zip file");
+            NbTools.output("Failed to load php formatter config: " + err.message);
+          });
+
+      } else {
+        this.codeStyle = null;
+      }
+    }
+
+    this.config = newConfig;
   }
 
   public getConfig(): INbToolsConfig {
     return this.config;
+  }
+
+  public loadConfigFromZipfile(zipFilename: string): Promise<any> {
+    return (new NbPreferencesLoader())
+      .loadPHPFormatterPrefs(zipFilename);
   }
 
   private getArgs(fileNameToFormat: string): Array<string> {
@@ -32,8 +66,8 @@ class PHPFormatter extends Formatter {
     if (this.config.java_custom_args !== '') {
       args.push(this.config.java_custom_args);
     }
-    if (this.config.php_formatter_config !== null) {
-      args.push(`-c=${JSON.stringify(this.config.php_formatter_config)}`);
+    if (this.codeStyle !== null) {
+      args.push(`-c=${JSON.stringify(this.codeStyle)}`);
     }
 
     args.push(`-m="text/x-php5"`);

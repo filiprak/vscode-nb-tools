@@ -1,6 +1,5 @@
 import yauzl, { Entry } from 'yauzl';
 import { parseStringPromise } from 'xml2js';
-import { INbToolsConfigPHPFormatterPrefs } from './INbToolsConfig';
 
 
 class XMLPreferences {
@@ -37,33 +36,33 @@ class XMLPreferences {
     }
 }
 
-class NbPreferencesLoader {
-    private filterPrefValue(str: any): string | number | boolean {
-        str = String(str);
+export default class NbPreferencesLoader {
+    // private filterPrefValue(str: any): string | number | boolean {
+    //     str = String(str);
 
-        if (str.toLowerCase() === "true") {
-            return true;
-        }
+    //     if (str.toLowerCase() === "true") {
+    //         return true;
+    //     }
 
-        if (str.toLowerCase() === "false") {
-            return false;
-        }
+    //     if (str.toLowerCase() === "false") {
+    //         return false;
+    //     }
 
-        const intParsed = parseInt(str);
-        const floatParsed = parseFloat(str);
+    //     const intParsed = parseInt(str);
+    //     const floatParsed = parseFloat(str);
 
-        if (String(intParsed) === str) {
-            return intParsed;
+    //     if (String(intParsed) === str) {
+    //         return intParsed;
 
-        } if (String(floatParsed) === str) {
-            return floatParsed;
+    //     } if (String(floatParsed) === str) {
+    //         return floatParsed;
 
-        } else {
-            return str;
-        }
-    }
+    //     } else {
+    //         return str;
+    //     }
+    // }
 
-    public loadPHPFormatterPrefs(zipFilename: string): Promise<INbToolsConfigPHPFormatterPrefs> {
+    public loadPHPFormatterPrefs(zipFilename: string): Promise<any> {
 
         return this
             .loadFiles(zipFilename, [
@@ -87,7 +86,7 @@ class NbPreferencesLoader {
                                 parsedEditorXml['editor-preferences']['entry']
                             ) {
                                 phpPrefs = parsedEditorXml['editor-preferences']['entry'].reduce((acc: any, entry: any) => {
-                                    acc[entry.$.name] = this.filterPrefValue(entry.value[0]);
+                                    acc[entry.$.name] = entry.value[0];
                                     return acc;
                                 }, {});
                             }
@@ -97,7 +96,7 @@ class NbPreferencesLoader {
                                 parsedPhpXml['editor-preferences']['entry']
                             ) {
                                 parsedPhpXml['editor-preferences']['entry'].forEach((entry: any) => {
-                                    phpPrefs[entry.$.name] = this.filterPrefValue(entry.value[0]);
+                                    phpPrefs[entry.$.name] = entry.value[0];
                                 }, {});
                             }
 
@@ -186,15 +185,3 @@ class NbPreferencesLoader {
         });
     }
 }
-
-const loader = new NbPreferencesLoader();
-
-loader
-    .loadPHPFormatterPrefs('testProject/nb_config.zip')
-    .then((prefs: INbToolsConfigPHPFormatterPrefs) => {
-        console.log(prefs);
-    })
-    .catch((err) => {
-        console.error("Loading error:");
-        console.error(err);
-    });
