@@ -17,7 +17,6 @@ class PHPFormatter extends Formatter {
 
   public constructor() {
     super();
-    this.onConfigChanged();
   }
 
   public onConfigChanged(): void {
@@ -116,6 +115,7 @@ class PHPFormatter extends Formatter {
       }
 
       const formatted: string = fs.readFileSync(tmpFileName, 'utf-8');
+      
       try {
         fs.unlinkSync(tmpFileName);
       } catch (err) { }
