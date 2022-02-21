@@ -13,7 +13,6 @@ import NbTools from '../../NbTools';
 
 class PHPFormatter extends Formatter {
   private config: INbToolsConfig = {} as any;
-  private args: Array<string> = [];
 
   public constructor() {
     super();
@@ -21,24 +20,25 @@ class PHPFormatter extends Formatter {
 
   public onConfigChanged(): void {
     this.config = Workspace.getConfiguration('nbtools') as any;
-    this.args.length = 0;
-
-    if (this.config.java_custom_args !== '') {
-      this.args.push(this.config.java_custom_args);
-    }
-    if (this.config.php_formatter_config !== null) {
-      this.args.push(`-c=${JSON.stringify(this.config.php_formatter_config)}`);
-    }
   }
 
   public getConfig(): INbToolsConfig {
     return this.config;
   }
 
-  private getArgs(fileName: string): Array<string> {
-    const args: Array<string> = this.args.slice(0);
+  private getArgs(fileNameToFormat: string): Array<string> {
+    const args: Array<string> = [];
+
+    if (this.config.java_custom_args !== '') {
+      args.push(this.config.java_custom_args);
+    }
+    if (this.config.php_formatter_config !== null) {
+      args.push(`-c=${JSON.stringify(this.config.php_formatter_config)}`);
+    }
+
     args.push(`-m="text/x-php5"`);
-    args.push(`"${fileName}"`);
+    args.push(`"${fileNameToFormat}"`);
+
     return args;
   }
 
@@ -54,7 +54,7 @@ class PHPFormatter extends Formatter {
 
       const tmpDir: string = os.tmpdir();
       const tmpFileName: string = path.normalize(
-        `${tmpDir}/temp-${Math.random()
+        `${tmpDir}/nbtools-temp-${Math.random()
           .toString(36)
           .replace(/[^a-z]+/g, '')
           .substr(0, 10)}.php`
@@ -115,7 +115,7 @@ class PHPFormatter extends Formatter {
       }
 
       const formatted: string = fs.readFileSync(tmpFileName, 'utf-8');
-      
+
       try {
         fs.unlinkSync(tmpFileName);
       } catch (err) { }
