@@ -1,7 +1,7 @@
 import assert from 'assert';
 import path from 'path';
 import fs from 'fs';
-import PHPFormatter from '../src/PHPFormatter';
+import PHPFormatter from '../src/formatters/php/PHPFormatter';
 import { execSync } from 'child_process';
 import {
   workspace as Workspace,
