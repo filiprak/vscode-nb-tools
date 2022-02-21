@@ -12,6 +12,7 @@
     "download": "node ./scripts/download.js",
     "pretest": "npm run build",
     "test": "cross-env CODE_TESTS_WORKSPACE=testProject node ./node_modules/vscode/bin/test",
+    "test:loader": "ts-node src/NbPreferencesLoader.ts",
     "release": "npm run download && npm run build && vsce package --out bin/"
   },
   "keywords": [
@@ -100,6 +101,9 @@
     "vscode": "^1.1.37"
   },
   "dependencies": {
-    "yauzl": "^2.10.0"
+    "@types/yauzl": "^2.9.2",
+    "yauzl": "^2.10.0",
+    "xml2js": "^0.4.23",
+    "@types/xml2js": "^0.4.9"
   }
 }
