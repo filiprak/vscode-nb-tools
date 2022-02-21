@@ -1,7 +1,7 @@
 {
   "name": "vscode-nb-tools",
   "displayName": "VSCode NetBeans tools integration",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Integrates netbeans tools into plugin",
   "main": "./out/src/extension",
   "scripts": {
