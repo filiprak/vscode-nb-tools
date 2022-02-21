@@ -1,9 +1,8 @@
 import { ExtensionContext } from 'vscode';
-import PHPFormatter from './PHPFormatter';
-import PHPFmtProvider from './PHPFmtProvider';
+import NbTools from './NbTools';
 
 export function activate(context: ExtensionContext): void {
-  const provider: PHPFmtProvider = new PHPFmtProvider(new PHPFormatter());
+  const provider: NbTools = new NbTools();
 
   context.subscriptions.push(
     provider.onDidChangeConfiguration(),
