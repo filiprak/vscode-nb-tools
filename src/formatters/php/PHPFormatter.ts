@@ -1,16 +1,15 @@
 import {
   workspace as Workspace,
   window as Window,
-  DocumentSelector,
 } from 'vscode';
 import path from 'path';
 import fs from 'fs';
 import os from 'os';
 import { execSync } from 'child_process';
 import INbToolsConfig from '../../INbToolsConfig';
-import Widget from '../../Widget';
 import Formatter from '../Formatter';
 import NbTools from '../../NbTools';
+
 
 class PHPFormatter extends Formatter {
   private config: INbToolsConfig = {} as any;

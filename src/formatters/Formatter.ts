@@ -2,6 +2,7 @@ import path from 'path';
 import NbTools from '../NbTools';
 import Widget from '../Widget';
 
+
 export default abstract class Formatter {
 
     public static getJarPath(): string {
