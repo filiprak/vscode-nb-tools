@@ -11,21 +11,30 @@ import fs from "fs";
 
 export default class JavaHandler {
     private config: INbToolsConfig = {} as any;
-    private javaHome: string = "";
-    private javaBin: string = "";
+    private static javaHome: string = "";
+    private static javaBin: string = "";
     private detectingPromise: Promise<string> | null = null;
 
-    public getJavaBin(): string {
-        if (!this.javaBin) {
-            if (fs.existsSync(path.resolve(this.javaHome, 'bin', 'java'))) {
-                return path.resolve(this.javaHome, 'bin', 'java');
-            } else if (fs.existsSync(path.resolve(this.javaHome, 'bin', 'java.exe'))) {
-                return path.resolve(this.javaHome, 'bin', 'java.exe');
+    public static getJavaBin(): string {
+        return JavaHandler.javaBin || 'java';
+    }
+
+    public static getJavaHome(): string {
+        return JavaHandler.javaHome;
+    }
+
+    private static findJavaBin(javaHome?: string): string {
+        if (javaHome) {
+            if (fs.existsSync(path.resolve(javaHome, 'bin', 'java.exe'))) {
+                return `"${path.resolve(javaHome, 'bin', 'java.exe')}"`;
+            } else if (fs.existsSync(path.resolve(javaHome, 'bin', 'java'))) {
+                return `"${path.resolve(javaHome, 'bin', 'java')}"`;
             } else {
                 return 'java';
             }
+        } else {
+            return 'java';
         }
-        return 'java';
     }
 
     public onConfigChanged(): void {
@@ -37,14 +46,20 @@ export default class JavaHandler {
                 this
                     .autoDetectHome()
                     .then(path => {
-                        this.javaHome = path;
+                        JavaHandler.javaHome = path;
+                        JavaHandler.javaBin = JavaHandler.findJavaBin(path);
                     })
                     .catch(err => {
+                        JavaHandler.javaHome = "";
+                        JavaHandler.javaBin = JavaHandler.findJavaBin("");
                         Window.showErrorMessage("nbtools: Failed to autodetect java");
                         NbTools.output("Failed to autodetect java: " + err.message);
+                    })
+                    .finally(() => {
+                        this.detectingPromise = null;
                     });
             } else {
-                this.javaHome = newConfig.java_bin;
+                JavaHandler.javaBin = newConfig.java_bin;
             }
         }
 

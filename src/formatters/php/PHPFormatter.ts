@@ -10,6 +10,7 @@ import INbToolsConfig from '../../INbToolsConfig';
 import Formatter from '../Formatter';
 import NbTools from '../../NbTools';
 import NbPreferencesLoader from '../../NbPreferencesLoader';
+import JavaHandler from '../../JavaHandler';
 
 
 class PHPFormatter extends Formatter {
@@ -116,7 +117,7 @@ class PHPFormatter extends Formatter {
 
       let formatCmd: string;
 
-      formatCmd = `${this.config.java_bin} -XX:TieredStopAtLevel=1 -XX:CICompilerCount=1 -XX:+UseSerialGC -Xmx512m -XX:-UsePerfData -jar "${PHPFormatter.getJarPath()}" ${args.join(' ')}`;
+      formatCmd = `${JavaHandler.getJavaBin()} -XX:TieredStopAtLevel=1 -XX:CICompilerCount=1 -XX:+UseSerialGC -Xmx512m -XX:-UsePerfData -jar "${PHPFormatter.getJarPath()}" ${args.join(' ')}`;
 
       NbTools.output(formatCmd);
 

@@ -65,7 +65,7 @@
         "nbtools.java_bin": {
           "type": "string",
           "default": "auto",
-          "description": "Java executable path"
+          "description": "Java executable path e.g. 'C:/ProgramFiles/java/java.exe' ('auto' - will detect java automatically)"
         },
         "nbtools.java_custom_args": {
           "type": "string",
