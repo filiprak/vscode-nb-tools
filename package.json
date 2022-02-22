@@ -64,7 +64,7 @@
         },
         "nbtools.java_bin": {
           "type": "string",
-          "default": "java",
+          "default": "auto",
           "description": "Java executable path"
         },
         "nbtools.java_custom_args": {
@@ -92,6 +92,7 @@
     "@types/yauzl": "^2.9.2",
     "yauzl": "^2.10.0",
     "xml2js": "^0.4.23",
-    "@types/xml2js": "^0.4.9"
+    "@types/xml2js": "^0.4.9",
+    "find-java-home": "^1.2.2"
   }
 }

@@ -13,12 +13,14 @@ import {
 import Formatter from './formatters/Formatter';
 import PHPFormatter from './formatters/php/PHPFormatter';
 import Widget from './Widget';
+import JavaHandler from './JavaHandler';
 
 export default class NbTools {
   private static readonly formatters: { [languageId: string]: Formatter } = {
     'php': new PHPFormatter()
   };
   private static readonly widget: Widget = Widget.getInstance();
+  private static readonly javaHandler: JavaHandler = new JavaHandler();
   private static readonly documentSelector: DocumentSelector = [
     { language: 'php', scheme: 'file' },
     { language: 'php', scheme: 'untitled' }
@@ -52,6 +54,7 @@ export default class NbTools {
     for (const languageId in NbTools.formatters) {
       const formatter = NbTools.formatters[languageId];
       formatter.onConfigChanged();
+      NbTools.javaHandler.onConfigChanged();
     }
   }
 
