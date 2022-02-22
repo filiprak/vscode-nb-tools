@@ -54,13 +54,13 @@
       }
     ],
     "configuration": {
-      "title": "nbtools Configuration options",
+      "title": "NetBeans Tools",
       "type": "object",
       "properties": {
         "nbtools.nb_config_zipfile": {
           "type": "string",
           "default": "",
-          "description": "Absolute file path to NetBeans config zip file"
+          "description": "Absolute file path to NetBeans config zip file e.g 'C:/ProgramFiles/config.zip'"
         },
         "nbtools.java_bin": {
           "type": "string",
