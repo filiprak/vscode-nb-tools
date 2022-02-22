@@ -80,23 +80,26 @@ export default class NbTools {
           return new Promise<any>((resolve, reject) => {
             const originalText: string = document.getText();
             const lastLine = document.lineAt(document.lineCount - 1);
-            let formatRange: Range = new Range(
+            const fullRange: Range = new Range(
               new Position(0, 0),
               lastLine.range.end
             );
+            let start: number = -1;
+            let end: number = -1;
 
             if (Window.activeTextEditor) {
-              if (Window.activeTextEditor.selection.isEmpty) {
-                formatRange = Window.activeTextEditor.selection;
+              if (!Window.activeTextEditor.selection.isEmpty) {
+                start = document.offsetAt(Window.activeTextEditor.selection.start);
+                end = document.offsetAt(Window.activeTextEditor.selection.end);
               }
             }
 
             NbTools
               .getFormatter(document.languageId)
-              .reformat(originalText, -1, -1)
+              .reformat(originalText, start, end)
               .then((text: string) => {
                 if (text !== originalText) {
-                  resolve([new TextEdit(formatRange, text)]);
+                  resolve([new TextEdit(fullRange, text)]);
                 } else {
                   reject();
                 }
